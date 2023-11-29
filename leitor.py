@@ -71,6 +71,8 @@ def verifica_se_cabecote_esta_vazio(cabecote):
     
 def seleciona_indice_menor_elemento(cabecote):
     menor_elemento_indice = 0
+    while cabecote[menor_elemento_indice] == '':
+        menor_elemento_indice+=1
     for i in range(1, len(cabecote), 1):
         if(cabecote[i]==''):
             continue
@@ -82,30 +84,29 @@ def seleciona_indice_menor_elemento(cabecote):
 while index_inicial < len(lista_arquivos):
     contador_mesclagem = 0
     cabecote = [''] * 6
-    lista_arquivos_abertos = []
+    lista_arquivos_abertos = [None] * 6
 
     for i in range(index_inicial, index_final+1, 1):
         caminho_completo = os.path.join(caminho_da_pasta, lista_arquivos[i])
         arquivo = open(caminho_completo)
 
-        lista_arquivos.append(arquivo)
+        lista_arquivos_abertos[i%incrementa_pros_proximos] = arquivo
 
-        cabecote[i%incrementa_pros_proximos] = lista_arquivos[i%incrementa_pros_proximos].readline()
+        cabecote[i%incrementa_pros_proximos] = lista_arquivos_abertos[i%incrementa_pros_proximos].readline()
     
     novo_arquivo_mesclado = open('mesclagem'+str(contador_mesclagem)+'.txt', "a")
     contador_mesclagem+=1
 
     #enquanto houver elementos no cabeçote:
     while not verifica_se_cabecote_esta_vazio(cabecote):
+        print(cabecote)
         index_menor_elemento = seleciona_indice_menor_elemento(cabecote)
 
         #escreva o menor elemento no novo arquivo
         novo_arquivo_mesclado.write(cabecote[index_menor_elemento])
-        
-        caminho_completo = os.path.join(caminho_da_pasta, lista_arquivos[index_menor_elemento])
-        arquivo = open(caminho_completo)
+        arquivo = lista_arquivos_abertos[index_menor_elemento]
         cabecote[index_menor_elemento] = arquivo.readline()
 
-        index_inicial += incrementa_pros_proximos
-        index_final += incrementa_pros_proximos
+    index_inicial += incrementa_pros_proximos
+    index_final += incrementa_pros_proximos
         #mova o cabeçote do arquivo correspondente
