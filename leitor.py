@@ -1,6 +1,6 @@
 import os
 from ordenador import Ordenator
-
+from metodos_mesclagem import verifica_se_cabecote_esta_vazio, seleciona_indice_menor_elemento 
 ordenador = Ordenator()
 
 caminho_da_pasta ="./arquivos/"
@@ -8,12 +8,12 @@ caminho_da_pasta ="./arquivos/"
 if not os.path.exists(caminho_da_pasta):
     os.makedirs(caminho_da_pasta)
     
-arquivo = open("teste1.txt", encoding='latin-1')
+arquivo = open("ordExt_teste.txt", encoding='latin-1')
 contador =0
 nome_arquivo = ""
 numero_arquivo=0
 vetor_de_cem =[]
-registros_por_arquivo=5
+registros_por_arquivo=100
 for linha in arquivo:
     #if(contador==0):
         #numero_arquivo+=1
@@ -53,60 +53,52 @@ if(len(vetor_de_cem)>0):
 
     novo_arquivo.close()
 
+
 lista_arquivos = os.listdir(caminho_da_pasta)
-print(lista_arquivos)
+
 index_inicial =0
-index_final = 5
-incrementa_pros_proximos = 6
+index_final = 9
+incrementa_pros_proximos = 10
+contador_pasta_mesclagem =0
+
+while len(lista_arquivos)>1:
+
+    while index_inicial < len(lista_arquivos):
+        contador_mesclagem = 0
+        cabecote = [''] * 10
+        lista_arquivos_abertos = [None] * 10
+
+        for i in range(index_inicial, index_final+1, 1):
+            caminho_completo = os.path.join(caminho_da_pasta, lista_arquivos[i])
+            arquivo = open(caminho_completo)
+
+            lista_arquivos_abertos[i%incrementa_pros_proximos] = arquivo
+
+            cabecote[i%incrementa_pros_proximos] = lista_arquivos_abertos[i%incrementa_pros_proximos].readline()
 
 
+        caminho_da_pasta_mesclagem ="./mesclagem"+str(contador_pasta_mesclagem)+"/"
+        if not os.path.exists(caminho_da_pasta_mesclagem):
+            os.makedirs(caminho_da_pasta_mesclagem)
 
-def verifica_se_cabecote_esta_vazio(cabecote):
-    estaVazio = True
-    for elemento in cabecote:
-        if elemento != '':
-            estaVazio = False
-            return estaVazio
-    return estaVazio
+        nome_arquivo_mesclado= 'arquivo'+str(contador_mesclagem)+'mesclado.txt'
+        contador_mesclagem+=1
+        caminho_completo = os.path.join(caminho_da_pasta_mesclagem,nome_arquivo_mesclado)
+        novo_arquivo_mesclado = open(caminho_completo,"a")
+
+        #enquanto houver elementos no cabeçote:
+        while not verifica_se_cabecote_esta_vazio(cabecote):
+            #print(cabecote)
+            index_menor_elemento = seleciona_indice_menor_elemento(cabecote)
+
+            #escreva o menor elemento no novo arquivo
+            novo_arquivo_mesclado.write(cabecote[index_menor_elemento])
+            arquivo = lista_arquivos_abertos[index_menor_elemento]
+            cabecote[index_menor_elemento] = arquivo.readline()
+
+        index_inicial += incrementa_pros_proximos
+        index_final += incrementa_pros_proximos
+            #mova o cabeçote do arquivo correspondente
     
-def seleciona_indice_menor_elemento(cabecote):
-    menor_elemento_indice = 0
-    while cabecote[menor_elemento_indice] == '':
-        menor_elemento_indice+=1
-    for i in range(1, len(cabecote), 1):
-        if(cabecote[i]==''):
-            continue
-        if(float(cabecote[i]) < float(cabecote[menor_elemento_indice])):
-            menor_elemento_indice = i
-    return menor_elemento_indice
-
-
-while index_inicial < len(lista_arquivos):
-    contador_mesclagem = 0
-    cabecote = [''] * 6
-    lista_arquivos_abertos = [None] * 6
-
-    for i in range(index_inicial, index_final+1, 1):
-        caminho_completo = os.path.join(caminho_da_pasta, lista_arquivos[i])
-        arquivo = open(caminho_completo)
-
-        lista_arquivos_abertos[i%incrementa_pros_proximos] = arquivo
-
-        cabecote[i%incrementa_pros_proximos] = lista_arquivos_abertos[i%incrementa_pros_proximos].readline()
-    
-    novo_arquivo_mesclado = open('mesclagem'+str(contador_mesclagem)+'.txt', "a")
-    contador_mesclagem+=1
-
-    #enquanto houver elementos no cabeçote:
-    while not verifica_se_cabecote_esta_vazio(cabecote):
-        print(cabecote)
-        index_menor_elemento = seleciona_indice_menor_elemento(cabecote)
-
-        #escreva o menor elemento no novo arquivo
-        novo_arquivo_mesclado.write(cabecote[index_menor_elemento])
-        arquivo = lista_arquivos_abertos[index_menor_elemento]
-        cabecote[index_menor_elemento] = arquivo.readline()
-
-    index_inicial += incrementa_pros_proximos
-    index_final += incrementa_pros_proximos
-        #mova o cabeçote do arquivo correspondente
+    lista_arquivos = os.listdir(caminho_da_pasta_mesclagem)
+    contador_pasta_mesclagem+=1
