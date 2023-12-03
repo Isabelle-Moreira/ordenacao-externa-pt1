@@ -59,18 +59,23 @@ lista_arquivos = os.listdir(caminho_da_pasta)
 index_inicial =0
 index_final = 9
 incrementa_pros_proximos = 10
-contador_pasta_mesclagem =0
+contador_pasta_mesclagem =1
+contador_mesclagem = 1
 
 while len(lista_arquivos)>1:
-
+    index_inicial = 0
+    index_final = 9
+    contador_mesclagem=1
     while index_inicial < len(lista_arquivos):
-        contador_mesclagem = 0
         cabecote = [''] * 10
         lista_arquivos_abertos = [None] * 10
 
         for i in range(index_inicial, index_final+1, 1):
-            caminho_completo = os.path.join(caminho_da_pasta, lista_arquivos[i])
-            arquivo = open(caminho_completo)
+            if contador_pasta_mesclagem ==1:
+                caminho_da_pasta_mesclagem = caminho_da_pasta
+            print(lista_arquivos[i])
+            caminho_completo_mesclagem = os.path.join(caminho_da_pasta_mesclagem, lista_arquivos[i])
+            arquivo = open(caminho_completo_mesclagem)
 
             lista_arquivos_abertos[i%incrementa_pros_proximos] = arquivo
 
@@ -78,13 +83,15 @@ while len(lista_arquivos)>1:
 
 
         caminho_da_pasta_mesclagem ="./mesclagem"+str(contador_pasta_mesclagem)+"/"
+        print(caminho_da_pasta_mesclagem)
         if not os.path.exists(caminho_da_pasta_mesclagem):
             os.makedirs(caminho_da_pasta_mesclagem)
 
         nome_arquivo_mesclado= 'arquivo'+str(contador_mesclagem)+'mesclado.txt'
+        print(nome_arquivo_mesclado)
         contador_mesclagem+=1
-        caminho_completo = os.path.join(caminho_da_pasta_mesclagem,nome_arquivo_mesclado)
-        novo_arquivo_mesclado = open(caminho_completo,"a")
+        caminho_completo_mesclagem = os.path.join(caminho_da_pasta_mesclagem,nome_arquivo_mesclado)
+        novo_arquivo_mesclado = open(caminho_completo_mesclagem,"a")
 
         #enquanto houver elementos no cabeçote:
         while not verifica_se_cabecote_esta_vazio(cabecote):
@@ -96,9 +103,10 @@ while len(lista_arquivos)>1:
             arquivo = lista_arquivos_abertos[index_menor_elemento]
             cabecote[index_menor_elemento] = arquivo.readline()
 
+        novo_arquivo_mesclado.close()
         index_inicial += incrementa_pros_proximos
         index_final += incrementa_pros_proximos
             #mova o cabeçote do arquivo correspondente
-    
+
     lista_arquivos = os.listdir(caminho_da_pasta_mesclagem)
-    contador_pasta_mesclagem+=1
+    contador_pasta_mesclagem += 1
