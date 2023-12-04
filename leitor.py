@@ -54,13 +54,18 @@ if(len(vetor_de_cem)>0):
     novo_arquivo.close()
 
 
-lista_arquivos = os.listdir(caminho_da_pasta)
 
 index_inicial =0
 index_final = 9
 incrementa_pros_proximos = 10
+
+caminho_da_pasta_de_leitura = './arquivos'
+caminho_da_pasta_de_mesclagem = './mesclagem1'
+
+lista_arquivos = os.listdir(caminho_da_pasta_de_leitura)
+
 contador_pasta_mesclagem =1
-contador_mesclagem = 1
+contador_arquivo_mesclagem = 1
 
 while len(lista_arquivos)>1:
     index_inicial = 0
@@ -74,24 +79,25 @@ while len(lista_arquivos)>1:
             if contador_pasta_mesclagem ==1:
                 caminho_da_pasta_mesclagem = caminho_da_pasta
             print(lista_arquivos[i])
-            caminho_completo_mesclagem = os.path.join(caminho_da_pasta_mesclagem, lista_arquivos[i])
-            arquivo = open(caminho_completo_mesclagem)
+            caminho_do_arquivo_de_leitura = os.path.join(caminho_da_pasta_de_leitura, lista_arquivos[i])
+            arquivo_de_leitura = open(caminho_do_arquivo_de_leitura)
 
-            lista_arquivos_abertos[i%incrementa_pros_proximos] = arquivo
+            lista_arquivos_abertos[i%incrementa_pros_proximos] = arquivo_de_leitura
 
             cabecote[i%incrementa_pros_proximos] = lista_arquivos_abertos[i%incrementa_pros_proximos].readline()
 
 
-        caminho_da_pasta_mesclagem ="./mesclagem"+str(contador_pasta_mesclagem)+"/"
+        #caminho_da_pasta_mesclagem ="./mesclagem"+str(contador_pasta_mesclagem)+"/"
         print(caminho_da_pasta_mesclagem)
-        if not os.path.exists(caminho_da_pasta_mesclagem):
-            os.makedirs(caminho_da_pasta_mesclagem)
+
+        if not os.path.exists(caminho_da_pasta_de_mesclagem):
+            os.makedirs(caminho_da_pasta_de_mesclagem)
 
         nome_arquivo_mesclado= 'arquivo'+str(contador_mesclagem)+'mesclado.txt'
         print(nome_arquivo_mesclado)
         contador_mesclagem+=1
-        caminho_completo_mesclagem = os.path.join(caminho_da_pasta_mesclagem,nome_arquivo_mesclado)
-        novo_arquivo_mesclado = open(caminho_completo_mesclagem,"a")
+        caminho_completo_arquivo_de_mesclagem = os.path.join(caminho_da_pasta_de_mesclagem , nome_arquivo_mesclado)
+        novo_arquivo_mesclado = open(caminho_completo_arquivo_de_mesclagem,"a")
 
         #enquanto houver elementos no cabeçote:
         while not verifica_se_cabecote_esta_vazio(cabecote):
@@ -108,5 +114,10 @@ while len(lista_arquivos)>1:
         index_final += incrementa_pros_proximos
             #mova o cabeçote do arquivo correspondente
 
-    lista_arquivos = os.listdir(caminho_da_pasta_mesclagem)
+    caminho_da_pasta_de_leitura = "./mesclagem"+str(contador_pasta_mesclagem)+"/"
+    caminho_da_pasta_de_mesclagem = "./mesclagem"+str(contador_pasta_mesclagem+1)+"/"
+    
     contador_pasta_mesclagem += 1
+
+    lista_arquivos = os.listdir(caminho_da_pasta_de_leitura)
+    
