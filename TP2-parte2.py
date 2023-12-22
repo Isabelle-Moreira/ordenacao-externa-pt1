@@ -69,8 +69,12 @@ if(len(vetor_de_elementos)>0):
 
     aleatorio.close()
 
+nome_arquivo="arquivo"+str(10)+".txt" #nomeando novo arquivo
+caminho_completo = os.path.join(caminho_da_pasta, nome_arquivo) #caminho completo arquivo + direcionamento para pasta
+novo_arquivo = open(caminho_completo,"a")  #criando novo arquivo já na pasta
 
 #agora precisa do merge
+
 '''index_inicial =0
 index_final = 9
 incrementa_pros_proximos = 10
