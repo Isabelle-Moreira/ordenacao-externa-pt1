@@ -1,4 +1,5 @@
 import os
+import random
 from ordenador import Ordenator
 from metodos_mesclagem import verifica_se_cabecote_esta_vazio, seleciona_indice_menor_elemento 
 ordenador = Ordenator()
@@ -17,7 +18,16 @@ vetor_de_elementos = []
 contador_de_registros_em_memoria = 0
 contador_de_registros_em_arquivo = 0
 qtd_maxima_de_registros_em_memoria = 100
-qtd_maxima_de_registros_por_arquivo=1000
+qtd_maxima_de_registros_por_arquivo=10000
+
+for i in range(9):
+    numero_arquivo =i+1
+    nome_arquivo="arquivo"+str(numero_arquivo)+".txt" #nomeando novo arquivo
+    caminho_completo = os.path.join(caminho_da_pasta, nome_arquivo) #caminho completo arquivo + direcionamento para pasta
+    novo_arquivo = open(caminho_completo,"a")  #criando novo arquivo já na pasta
+
+caminho_da_pasta_de_leitura = './arquivos'
+lista_arquivos = os.listdir(caminho_da_pasta_de_leitura)
 
 for linha in arquivo:
     #if(contador==0):
@@ -33,40 +43,35 @@ for linha in arquivo:
                 contador_de_registros_em_arquivo = 0
             
             if(contador_de_registros_em_arquivo == 0):
-                numero_arquivo+=1
-                nome_arquivo="arquivo"+str(numero_arquivo)+".txt" #nomeando novo arquivo
-            
-            caminho_completo = os.path.join(caminho_da_pasta, nome_arquivo) #caminho completo arquivo + direcionamento para pasta
-            
-            #print(caminho_completo)
-            novo_arquivo = open(caminho_completo,"a")  #criando novo arquivo já na pasta 
-
-            ordenador.heap_sort(vetor_de_elementos)
-
+                ordenador.heap_sort(vetor_de_elementos)
+        
+            #fazer a logica pra acrescentar os elementos do vetor de 100 num arquivo aleatório
+            escolhe_aleatorio = random.choice(lista_arquivos)
+            caminho_completo_aleatorio= os.path.join(caminho_da_pasta, escolhe_aleatorio)
             for i in range(len(vetor_de_elementos)):
-                novo_arquivo.write(str(vetor_de_elementos[i])+"\n")
+                ordenador.heap_sort(vetor_de_elementos)
+                arquivo_aleatorio = open(caminho_completo_aleatorio, "a")
+                arquivo_aleatorio.write(str(vetor_de_elementos[i])+"\n")
                 contador_de_registros_em_arquivo += 1
 
-            novo_arquivo.close()
+            arquivo_aleatorio.close()
             contador_de_registros_em_memoria=0
             vetor_de_elementos =[]
 
-'''if(len(vetor_de_elementos)>0):
-    numero_arquivo+=1
-    nome_arquivo="arquivo"+str(numero_arquivo)+".txt"
-    caminho_completo = os.path.join(caminho_da_pasta,nome_arquivo)
-    novo_arquivo = open(caminho_completo,"a")
-
+escolhe_aleatorio = random.choice(lista_arquivos)
+caminho_completo_aleatorio= os.path.join(caminho_da_pasta, escolhe_aleatorio)
+if(len(vetor_de_elementos)>0):
     ordenador.heap_sort(vetor_de_elementos)
+    aleatorio = open(caminho_completo_aleatorio,"a")
 
     for i in range(len(vetor_de_elementos)):
-        novo_arquivo.write(str(vetor_de_elementos[i])+"\n")
+        aleatorio.write(str(vetor_de_elementos[i])+"\n")
 
-    novo_arquivo.close()
+    aleatorio.close()
 
 
-
-index_inicial =0
+#agora precisa do merge
+'''index_inicial =0
 index_final = 9
 incrementa_pros_proximos = 10
 
