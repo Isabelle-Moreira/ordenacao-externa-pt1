@@ -91,6 +91,7 @@ ETAPAS A SEREM FEITAS
 nome_do_arquivo_de_intercalacao = 'arquivo10.txt'
 caminho_do_arquivo_de_intercalacao = os.path.join(caminho_da_pasta, nome_do_arquivo_de_intercalacao)
 cabecote_de_leitura = ['', '', '', '', '', '', '', '', '']
+arquivos_ja_esvaziados = []
 
 lista_de_nomes_de_arquivo = os.listdir(caminho_da_pasta)
 lista_de_nomes_de_arquivo.remove(nome_do_arquivo_de_intercalacao)
@@ -106,95 +107,62 @@ for i in range(len(lista_de_nomes_de_arquivo)):
 
     lista_de_apontamento_de_arquivos.append(arquivo)
 
-index_arquivo_vazio = verifica_se_tem_arquivo_vazio(cabecote_de_leitura)
+index_arquivo_vazio = verifica_se_tem_arquivo_vazio(cabecote_de_leitura, arquivos_ja_esvaziados, lista_de_nomes_de_arquivo)
 
-while index_arquivo_vazio == None:
-    while not verifica_se_cabecote_terminou_bloco(cabecote_de_leitura):
-        index_menor_elemento = seleciona_indice_menor_elemento(cabecote_de_leitura)
-            
+while len(arquivos_ja_esvaziados) < 10 and not verifica_se_cabecote_esta_vazio(cabecote_de_leitura):
+    while index_arquivo_vazio == None:
         arquivo_de_intercalacao = open(caminho_do_arquivo_de_intercalacao, "a")
-        arquivo_de_intercalacao.write(cabecote_de_leitura[index_menor_elemento])
 
-        arquivo_de_leitura = lista_de_apontamento_de_arquivos[index_menor_elemento]
-        cabecote_de_leitura[index_menor_elemento] = arquivo_de_leitura.readline()
-
-    arquivo_de_intercalacao.write("#\n")
-
-    for i in range(len(lista_de_apontamento_de_arquivos)):
-        cabecote_de_leitura[i] = lista_de_apontamento_de_arquivos[i].readline()
-
-    index_arquivo_vazio = verifica_se_tem_arquivo_vazio(cabecote_de_leitura)
-
-nome_do_arquivo_vazio = lista_de_nomes_de_arquivo[index_arquivo_vazio]
-caminho_do_arquivo_vazio = os.path.join(caminho_da_pasta, nome_do_arquivo_vazio)
-
-arquivo_vazio = open(caminho_do_arquivo_vazio, "w")
-arquivo_vazio.write("")
-arquivo_vazio.close()
-
-nome_antigo_arquivo_de_intercalacao = nome_do_arquivo_de_intercalacao
-caminho_do_antigo_arquivo_de_intercalacao = caminho_do_arquivo_de_intercalacao
-antigo_arquivo_de_intercalacao = open(caminho_do_antigo_arquivo_de_intercalacao)
-
-nome_do_arquivo_de_intercalacao = nome_do_arquivo_vazio
-caminho_do_arquivo_de_intercalacao = caminho_do_arquivo_vazio
-
-lista_de_nomes_de_arquivo[index_arquivo_vazio] = nome_antigo_arquivo_de_intercalacao
-lista_de_apontamento_de_arquivos[index_arquivo_vazio] = antigo_arquivo_de_intercalacao
-cabecote_de_leitura[index_arquivo_vazio] = antigo_arquivo_de_intercalacao.readline()
-
-print(nome_do_arquivo_de_intercalacao)
-print(caminho_do_arquivo_de_intercalacao)
-
-while index_arquivo_vazio == None:
-    while not verifica_se_cabecote_terminou_bloco(cabecote_de_leitura):
-        index_menor_elemento = seleciona_indice_menor_elemento(cabecote_de_leitura)
+        while not verifica_se_cabecote_terminou_bloco(cabecote_de_leitura):
+            index_menor_elemento = seleciona_indice_menor_elemento(cabecote_de_leitura)
             
-        arquivo_de_intercalacao = open(caminho_do_arquivo_de_intercalacao, "a")
-        arquivo_de_intercalacao.write(cabecote_de_leitura[index_menor_elemento])
+            arquivo_de_intercalacao.write(cabecote_de_leitura[index_menor_elemento])
 
-        arquivo_de_leitura = lista_de_apontamento_de_arquivos[index_menor_elemento]
-        cabecote_de_leitura[index_menor_elemento] = arquivo_de_leitura.readline()
+            arquivo_de_leitura = lista_de_apontamento_de_arquivos[index_menor_elemento]
+            cabecote_de_leitura[index_menor_elemento] = arquivo_de_leitura.readline()
 
-    arquivo_de_intercalacao.write("#\n")
+        arquivo_de_intercalacao.write("#\n")
 
-    for i in range(len(lista_de_apontamento_de_arquivos)):
-        cabecote_de_leitura[i] = lista_de_apontamento_de_arquivos[i].readline()
+        for i in range(len(lista_de_apontamento_de_arquivos)):
+            cabecote_de_leitura[i] = lista_de_apontamento_de_arquivos[i].readline()
 
-    index_arquivo_vazio = verifica_se_tem_arquivo_vazio(cabecote_de_leitura)
+        index_arquivo_vazio = verifica_se_tem_arquivo_vazio(cabecote_de_leitura, arquivos_ja_esvaziados, lista_de_nomes_de_arquivo)
 
-nome_do_arquivo_vazio = lista_de_nomes_de_arquivo[index_arquivo_vazio]
-caminho_do_arquivo_vazio = os.path.join(caminho_da_pasta, nome_do_arquivo_vazio)
+    arquivo_de_intercalacao.close()
 
-arquivo_vazio = open(caminho_do_arquivo_vazio, "w")
-arquivo_vazio.write("")
-arquivo_vazio.close()
 
-nome_antigo_arquivo_de_intercalacao = nome_do_arquivo_de_intercalacao
-caminho_do_antigo_arquivo_de_intercalacao = caminho_do_arquivo_de_intercalacao
-antigo_arquivo_de_intercalacao = open(caminho_do_antigo_arquivo_de_intercalacao)
 
-nome_do_arquivo_de_intercalacao = nome_do_arquivo_vazio
-caminho_do_arquivo_de_intercalacao = caminho_do_arquivo_vazio
+    nome_do_arquivo_vazio = lista_de_nomes_de_arquivo[index_arquivo_vazio]
+    caminho_do_arquivo_vazio = os.path.join(caminho_da_pasta, nome_do_arquivo_vazio)
 
-lista_de_nomes_de_arquivo[index_arquivo_vazio] = nome_antigo_arquivo_de_intercalacao
-lista_de_apontamento_de_arquivos[index_arquivo_vazio] = antigo_arquivo_de_intercalacao
-cabecote_de_leitura[index_arquivo_vazio] = antigo_arquivo_de_intercalacao.readline()
+    arquivo_vazio = open(caminho_do_arquivo_vazio, "w")
+    arquivo_vazio.write("")
+    arquivo_vazio.close()
 
-print(nome_do_arquivo_de_intercalacao)
-print(caminho_do_arquivo_de_intercalacao)
+    arquivos_ja_esvaziados.append(nome_do_arquivo_vazio)
 
-'''nome_antigo_arquivo_de_intercalacao = nome_do_arquivo_de_intercalacao
-caminho_do_antigo_arquivo_de_intercalacao = caminho_do_arquivo_de_intercalacao
+    nome_antigo_arquivo_de_intercalacao = nome_do_arquivo_de_intercalacao
+    caminho_do_antigo_arquivo_de_intercalacao = caminho_do_arquivo_de_intercalacao
+    antigo_arquivo_de_intercalacao = open(caminho_do_antigo_arquivo_de_intercalacao)
 
-nome_do_arquivo_de_intercalacao = lista_de_nomes_de_arquivo[index_arquivo_vazio]
-caminho_do_arquivo_de_intercalacao = os.path.join(caminho_da_pasta, nome_do_arquivo_de_intercalacao)
+    lista_de_nomes_de_arquivo[index_arquivo_vazio] = nome_antigo_arquivo_de_intercalacao
+    lista_de_apontamento_de_arquivos[index_arquivo_vazio] = antigo_arquivo_de_intercalacao
+    cabecote_de_leitura[index_arquivo_vazio] = antigo_arquivo_de_intercalacao.readline()
 
-lista_de_nomes_de_arquivo[index_arquivo_vazio] = antigo_arquivo_de_intercalacao
-arquivo = open(caminho_do_antigo_arquivo_de_intercalacao)
-lista_de_apontamento_de_arquivos[index_arquivo_vazio] = arquivo
+    nome_do_arquivo_de_intercalacao = nome_do_arquivo_vazio
+    caminho_do_arquivo_de_intercalacao = caminho_do_arquivo_vazio
 
-lista_de_apontamento_de_arquivos[index_arquivo_vazio] = arquivo.readline()'''
+    index_arquivo_vazio = verifica_se_tem_arquivo_vazio(cabecote_de_leitura, arquivos_ja_esvaziados, lista_de_nomes_de_arquivo)
+
+    print(arquivos_ja_esvaziados)
+    print(cabecote_de_leitura)
+
+'''
+Este código agora ordena todos os números, mas o último arquivo ainda fica dividido em blocos.
+Temos que pensar numa maneira para ordenar esse último arquivo ou analisar a lógica do código.
+Se não der, entregamos assim mesmo
+
+'''
 
 print("Terminei!")
 #agora precisa do merge

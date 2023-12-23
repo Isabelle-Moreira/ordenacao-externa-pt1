@@ -6,10 +6,11 @@ def verifica_se_cabecote_esta_vazio(cabecote):
             return estaVazio
     return estaVazio
 
-def verifica_se_tem_arquivo_vazio(cabecote):
+def verifica_se_tem_arquivo_vazio(cabecote, lista_de_arquivos_vazios, lista_de_arquivos_no_diretorio):
     index_arquivo_vazio = None
     for index in range(len(cabecote)):
-        if(cabecote[index]==''):
+        nome_do_arquivo = lista_de_arquivos_no_diretorio[index]
+        if(cabecote[index]=='' and nome_do_arquivo not in lista_de_arquivos_vazios):
             index_arquivo_vazio = index
             return index_arquivo_vazio
     return index_arquivo_vazio
@@ -17,7 +18,7 @@ def verifica_se_tem_arquivo_vazio(cabecote):
 def verifica_se_cabecote_terminou_bloco(cabecote):
     terminouLeitura = True
     for elemento in cabecote:
-        if elemento != '#\n':
+        if elemento != '#\n' and elemento != '':
             terminouLeitura = False
             return terminouLeitura
     return terminouLeitura
